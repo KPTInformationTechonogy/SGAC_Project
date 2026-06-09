@@ -40,7 +40,7 @@ const divisions = [
     items: ["Business Plans", "Grant Support", "Investment Advisory", "Market Expansion"],
     },
     {
-    title: "Other Income Streams",
+    title: "Other Integrated Services",
     icon: LineChart,
     items: ["Value-Added Processing", "Strategic Storage", "Logistics Operations", "Equipment Leasing"],
     },

@@ -2,21 +2,61 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { MapPin, Phone, Mail, Clock, Facebook, Twitter, Linkedin, ArrowUpRight } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Facebook, Twitter, Linkedin, ArrowUpRight, Loader2, CheckCircle2, AlertTriangle } from "lucide-react";
 
 export default function ContactFooter() {
 const [formState, setFormState] = useState({ name: "", email: "", phone: "", message: "" });
 
-const handleSubmit = (e: React.FormEvent) => {
+// Status UX States
+const [isSubmitting, setIsSubmitting] = useState(false);
+const [submissionStatus, setSubmissionStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+}>({ type: null, message: "" });
+
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted: ", formState);
-    // Add custom enterprise lead injection API endpoint processing here
+    setIsSubmitting(true);
+    setSubmissionStatus({ type: null, message: "" });
+
+    try {
+    const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formState),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+        setSubmissionStatus({
+        type: "success",
+        message: "Thank you! Your institutional message has been securely transmitted. Our corporate desk will review and reach out within 24 business hours.",
+        });
+        // Clear out state parameters upon definitive execution success
+        setFormState({ name: "", email: "", phone: "", message: "" });
+    } else {
+        setSubmissionStatus({
+        type: "error",
+        message: result.error || "A gateway error occurred. Please attempt transmission once more.",
+        });
+    }
+    } catch (err) {
+    setSubmissionStatus({
+        type: "error",
+        message: "Network core channel pipeline failure. Check network parameters and retry.",
+    });
+    } finally {
+    setIsSubmitting(false);
+    }
 };
 
 return (
     <>
     {/* =========================================================================
-        SECTION: CONTACT US (Clean Split Layout Matrix)[cite: 2]
+        SECTION: CONTACT US (Clean Split Layout Matrix)
         ========================================================================= */}
     <section id="contact" className="bg-white py-20 lg:py-28 relative scroll-mt-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,10 +78,10 @@ return (
             {/* Direct Communication Channels */}
             <div className="space-y-6">
                 {[
-                { icon: MapPin, title: "Headquarters Address", detail: "Plot 1428, Agro-Industrial District, Abuja, Nigeria" },
-                { icon: Phone, title: "Commercial Inquiries", detail: "+234 (0) 800 7422 2677" },
-                { icon: Mail, title: "Corporate Electronic Mail", detail: "info@sgac-group.com" },
-                { icon: Clock, title: "Standard Operations Desk", detail: "Monday — Friday | 08:00 AM - 05:00 PM (WAT)" },
+                { icon: MapPin, title: "Headquarters Address", detail: "No. 30, Adam Ibrahim Street, Badawa Layout, Nasarawa LGA, Kano, Nigeria." },
+                { icon: Phone, title: "Commercial Inquiries", detail: "+234 9078061022" },
+                { icon: Mail, title: "Corporate Electronic Mail", detail: "hellokpt01@gmail.com" },
+                { icon: Clock, title: "Standard Operations Desk", detail: "Monday — Saturday | 08:00 AM - 05:00 PM (WAT)" },
                 ].map((item, idx) => {
                 const Icon = item.icon;
                 return (
@@ -63,7 +103,7 @@ return (
             </div>
             </div>
 
-            {/* COLUMN 2: High-Contrast Interactive Form Block (7 Columns)[cite: 2] */}
+            {/* COLUMN 2: High-Contrast Interactive Form Block (7 Columns) */}
             <div className="lg:col-span-7 bg-[#F5F7F5] border border-gray-100 p-8 sm:p-10 rounded-[24px] shadow-[0px_15px_40px_rgba(38,50,56,0.02)]">
             <h3 className="font-header text-xl font-bold text-[#263238] mb-2">
                 Send an Institutional Message
@@ -78,7 +118,9 @@ return (
                     <label className="block font-header text-xs font-bold text-[#263238]/70 uppercase tracking-wider mb-2">Full Name</label>
                     <input 
                     type="text" required placeholder="e.g., John Doe"
-                    className="w-full font-body text-sm bg-white border border-gray-200 focus:border-[#0B5D1E] rounded-xl px-4 py-3.5 outline-none text-[#263238] transition-colors"
+                    disabled={isSubmitting}
+                    className="w-full font-body text-sm bg-white border border-gray-200 focus:border-[#0B5D1E] rounded-xl px-4 py-3.5 outline-none text-[#263238] transition-colors disabled:bg-gray-100 disabled:text-gray-400"
+                    value={formState.name}
                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                     />
                 </div>
@@ -86,7 +128,9 @@ return (
                     <label className="block font-header text-xs font-bold text-[#263238]/70 uppercase tracking-wider mb-2">Email Address</label>
                     <input 
                     type="email" required placeholder="e.g., john@company.com"
-                    className="w-full font-body text-sm bg-white border border-gray-200 focus:border-[#0B5D1E] rounded-xl px-4 py-3.5 outline-none text-[#263238] transition-colors"
+                    disabled={isSubmitting}
+                    className="w-full font-body text-sm bg-white border border-gray-200 focus:border-[#0B5D1E] rounded-xl px-4 py-3.5 outline-none text-[#263238] transition-colors disabled:bg-gray-100 disabled:text-gray-400"
+                    value={formState.email}
                     onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                     />
                 </div>
@@ -96,7 +140,9 @@ return (
                 <label className="block font-header text-xs font-bold text-[#263238]/70 uppercase tracking-wider mb-2">Phone Number</label>
                 <input 
                     type="tel" placeholder="e.g., +234 803 123 4567"
-                    className="w-full font-body text-sm bg-white border border-gray-200 focus:border-[#0B5D1E] rounded-xl px-4 py-3.5 outline-none text-[#263238] transition-colors"
+                    disabled={isSubmitting}
+                    className="w-full font-body text-sm bg-white border border-gray-200 focus:border-[#0B5D1E] rounded-xl px-4 py-3.5 outline-none text-[#263238] transition-colors disabled:bg-gray-100 disabled:text-gray-400"
+                    value={formState.phone}
                     onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
                 />
                 </div>
@@ -105,17 +151,45 @@ return (
                 <label className="block font-header text-xs font-bold text-[#263238]/70 uppercase tracking-wider mb-2">Message Body</label>
                 <textarea 
                     rows={4} required placeholder="Detail your procurement, specifications, or partnership inquiry details..."
-                    className="w-full font-body text-sm bg-white border border-gray-200 focus:border-[#0B5D1E] rounded-xl px-4 py-3.5 outline-none text-[#263238] transition-colors resize-none"
+                    disabled={isSubmitting}
+                    className="w-full font-body text-sm bg-white border border-gray-200 focus:border-[#0B5D1E] rounded-xl px-4 py-3.5 outline-none text-[#263238] transition-colors resize-none disabled:bg-gray-100 disabled:text-gray-400"
+                    value={formState.message}
                     onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                 />
                 </div>
 
+                {/* Secure Communication Status Feedback Message Banner */}
+                {submissionStatus.type && (
+                <div className={`p-4 rounded-xl text-sm font-body border flex items-start gap-3 animate-fadeIn ${
+                    submissionStatus.type === "success"
+                    ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                    : "bg-amber-50 border-amber-200 text-amber-900"
+                }`}>
+                    {submissionStatus.type === "success" ? (
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                    ) : (
+                    <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                    )}
+                    <span className="leading-relaxed text-xs">{submissionStatus.message}</span>
+                </div>
+                )}
+
                 <button 
                 type="submit"
-                className="w-full font-header font-bold text-xs uppercase tracking-wider text-white bg-[#0B5D1E] hover:bg-[#2E7D32] py-4 rounded-xl transition-all duration-200 shadow-md flex items-center justify-center gap-2 group"
+                disabled={isSubmitting}
+                className="w-full font-header font-bold text-xs uppercase tracking-wider text-white bg-[#0B5D1E] hover:bg-[#2E7D32] disabled:bg-gray-400 py-4 rounded-xl transition-all duration-200 shadow-md flex items-center justify-center gap-2 group"
                 >
-                <span>Transmit Secure Message</span>
-                <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                {isSubmitting ? (
+                    <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Transmitting Message Layer...</span>
+                    </>
+                ) : (
+                    <>
+                    <span>Transmit Secure Message</span>
+                    <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </>
+                )}
                 </button>
             </form>
             </div>
@@ -125,12 +199,12 @@ return (
     </section>
 
     {/* =========================================================================
-        SECTION: FOOTER (Full-Width Deep Emerald Canvas backdrop)[cite: 2]
+        SECTION: FOOTER (Full-Width Deep Emerald Canvas backdrop)
         ========================================================================= */}
     <footer className="bg-[#0B5D1E] text-white border-t border-white/10 pt-16 pb-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Top Multi-Column Matrix Alignment[cite: 2] */}
+        {/* Top Multi-Column Matrix Alignment */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-white/10">
             
             {/* Profile Intro Column (4 Columns Wide) */}
@@ -139,7 +213,7 @@ return (
                 SG<span className="text-[#F9A825]">AC</span>
             </span>
             <p className="font-body text-xs lg:text-sm text-white/70 leading-relaxed max-w-sm">
-                Saddiq Gerawa Agricultural Company (SGAC) is an institutional leader in large-scale mechanized crop cultivation, livestock management, and value-added end-to-end processing across sub-Saharan Africa.
+                Stable Green Agricultural Company (SGAC) is an institutional leader in large-scale mechanized crop cultivation, livestock management, and value-added end-to-end processing across sub-Saharan Africa.
             </p>
             {/* High-Contrast Social Link Hub */}
             <div className="flex items-center gap-3 pt-2">
@@ -161,7 +235,7 @@ return (
             </div>
             </div>
 
-            {/* Quick Links Column (2 Columns Wide)[cite: 2] */}
+            {/* Quick Links Column (2 Columns Wide) */}
             <div className="lg:col-span-2 lg:col-start-6">
             <h4 className="font-header text-xs font-bold uppercase tracking-widest text-[#F9A825] mb-4">
                 Navigation Links
@@ -182,7 +256,7 @@ return (
             </ul>
             </div>
 
-            {/* Operational Domains Column (3 Columns Wide)[cite: 2] */}
+            {/* Operational Domains Column (3 Columns Wide) */}
             <div className="lg:col-span-3">
             <h4 className="font-header text-xs font-bold uppercase tracking-widest text-[#F9A825] mb-4">
                 Core Agro-Sectors
@@ -208,9 +282,9 @@ return (
 
         </div>
 
-        {/* Bottom Copyright Block[cite: 2] */}
+        {/* Bottom Copyright Block */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-body text-white/50">
-            <p>© {new Date().getFullYear()} Saddiq Gerawa Agricultural Company (SGAC) Ltd. All Rights Reserved.</p>
+            <p>© {new Date().getFullYear()} Stable Green Agricultural Company (SGAC) Ltd. All Rights Reserved.</p>
             <div className="flex items-center gap-6">
             <a href="#privacy" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#terms" className="hover:text-white transition-colors">Terms of Operations</a>

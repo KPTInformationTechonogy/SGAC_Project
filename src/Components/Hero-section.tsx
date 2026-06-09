@@ -12,17 +12,17 @@ const stats = [
 ];
 
 return (
-    <section className="relative min-height-[90vh] lg:min-h-screen bg-[#263238] flex flex-col justify-between pt-32 lg:pt-20 overflow-hidden">
+    <section className="relative min-h-[90vh] lg:min-h-screen bg-[#263238] flex flex-col justify-between pt-32 lg:pt-20 overflow-hidden">
     
     {/* 1. Background Imagery & Dark Overlay Mask */}
     <div className="absolute inset-0 z-0">
         <img
-        src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=2000"
-        alt="Modern aerial drone farming operations and crop fields"
+        src="https://images.unsplash.com/photo-1464207687429-7505649dae38?auto=format&fit=crop&q=80&w=2000"
+        alt="Modern tractor working a vast farm field with an agricultural monitoring drone overhead"
         className="w-full h-full object-cover"
         />
         {/* Deep overlay to make white text highly visible for investors/NGOs */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent lg:bg-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-transparent lg:bg-black/55" />
     </div>
 
     {/* 2. Main Hero Content Layout Container */}
@@ -37,13 +37,12 @@ return (
 
         {/* Core Corporate Headline */}
         <h1 className="font-header text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.15] mb-6">
-            Building Sustainable Agriculture Through Production, Mechanization & Agribusiness Solutions
+            Building Sustainable Agriculture Through Production, <span className="text-[#F9A825]">Smart Mechanization</span> & Agribusiness Solutions
         </h1>
 
         {/* Subtext Paragraph */}
-        <p className="font-body text-base sm:text-lg text-white/80 leading-relaxed mb-10 max-w-2xl">
-            We provide crop production, livestock farming, mechanization services, agricultural consultancy, 
-            training, commodity aggregation, and market linkage solutions that empower farmers and businesses across Nigeria.
+        <p className="font-body text-base sm:text-lg text-white/90 leading-relaxed mb-10 max-w-2xl">
+            We provide heavy tractor field operations, smart drone precision farming, crop production, and commodity aggregation that scale industrial crop yields and empower agricultural networks across Nigeria.
         </p>
 
         {/* Integrated Multi-Action Button Row */}

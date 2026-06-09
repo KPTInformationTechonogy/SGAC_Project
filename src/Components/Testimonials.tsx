@@ -1,4 +1,7 @@
 "use client";
+import Image from "next/image";
+import Aliyu from "@/images/aliyu.jpg";
+import Ismail from "@/images/ismail.jpg";
 
 import { Star, Quote } from "lucide-react";
 
@@ -6,25 +9,25 @@ export default function Testimonials() {
 const testimonials = [
     {
     quote: "SGAC has completely transformed our supply chain predictability. Their premium rice paddy consistently hits our milling moisture targets, and their delivery schedules are flawlessly reliable.",
-    author: "Alhaji Ibrahim Bello",
+    author: "Ismail Aliyu Abubakar",
     role: "Managing Director",
-    company: "Northern Grain Millers Ltd",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&h=150",
+    company: "Kano Process Trading Company",
+    image: Ismail,
     },
     {
     quote: "Partnering with their outgrower schemes has allowed us to hit our corporate social responsibility targets while securing thousands of tons of high-protein, non-GMO industrial soybeans.",
-    author: "Dr. Evelyn Nwosu",
+    author: "Aliyu Muktar",
     role: "Head of Procurement",
-    company: "AfriFoods Processing Corp",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150&h=150",
+    company: "Kanbuild Trading Circuit Limited",
+    image: Aliyu,
     },
     {
     quote: "Their agricultural mechanization support helped our local cooperative clear and cultivate over 500 hectares of maize efficiently. The yield increase this season has been life-changing.",
-    author: "Samuel Amadu",
-    role: "Cooperative President",
-    company: "Benue Valley Farmers Alliance",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&h=150",
-    },
+    author: "Salim Abdussalam",
+    role: "Sales & Marketing Manager",
+    company: "KPTC",
+    image:Aliyu,
+},
 ];
 
 return (
@@ -75,7 +78,7 @@ return (
             {/* Author Profile Metadata Block */}
             <div className="flex items-center gap-4 pt-6 border-t border-gray-50">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-[#0B5D1E]/20 group-hover:border-[#0B5D1E] transition-colors duration-300">
-                <img
+                <Image
                     src={item.image}
                     alt={item.author}
                     className="w-full h-full object-cover"
