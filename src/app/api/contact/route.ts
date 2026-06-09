@@ -16,7 +16,7 @@ try {
 
     // Initialize the Nodemailer secure transport network layer
     const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
+    host: process.env.SMTP_HOST || "smtp.gmail.com",
     port: Number(process.env.SMTP_PORT) || 465,
     secure: true, 
     auth: {
@@ -35,7 +35,6 @@ try {
     html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 30px; border: 1px solid #e2e8f0; border-radius: 16px; max-width: 600px; margin: 20px auto; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
         
-        <!-- Header Area -->
         <div style="padding-bottom: 20px; border-bottom: 3px solid #F9A825; margin-bottom: 24px;">
             <span style="font-size: 24px; font-weight: 900; letter-spacing: -0.025em; color: #0B5D1E;">
             SG<span style="color: #F9A825;">AC</span>
@@ -45,12 +44,10 @@ try {
             </div>
         </div>
         
-        <!-- Context Introduction -->
         <p style="font-size: 14px; color: #4a5568; line-height: 1.6; margin-bottom: 24px;">
             A fresh institutional procurement or agro-partnership communication query has crossed the web perimeter gateway. See validation metadata details below:
         </p>
         
-        <!-- Key-Value Information Table Vector -->
         <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 28px;">
             <tr>
             <td style="padding: 12px 0; border-bottom: 1px solid #edf2f7; font-weight: 700; color: #2d3748; width: 140px;">Full Legal Name:</td>
@@ -68,7 +65,6 @@ try {
             </tr>
         </table>
         
-        <!-- Text Body Block Container -->
         <div style="background-color: #f7fafc; border-left: 4px solid #0B5D1E; padding: 20px; border-radius: 4px 8px 8px 4px;">
             <h4 style="margin: 0 0 10px 0; color: #0B5D1E; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: bold;">
             Procurement & Intent Specifications:
@@ -76,7 +72,6 @@ try {
             <p style="margin: 0; color: #2d3748; font-size: 14px; white-space: pre-line; line-height: 1.6;">${message}</p>
         </div>
         
-        <!-- Regulatory Bottom Footer Information Sign-off -->
         <div style="margin-top: 35px; border-top: 1px solid #edf2f7; padding-top: 20px; text-align: center;">
             <p style="font-size: 11px; color: #a0aec0; margin: 0; line-height: 1.5;">
             Automated system transmission. Reply to this mail directly to initiate continuous workflow correspondence with the lead applicant.
@@ -95,8 +90,14 @@ try {
     { status: 200 }
     );
     
-} catch (error: any) {
-    console.error("Backplane Core Pipeline Email Dispatch Fault Trace:", error);
+} catch (error: unknown) {
+    // Type narrowing protection to appease strict ESLint rules
+    if (error instanceof Error) {
+    console.error("Backplane Core Pipeline Email Dispatch Fault Trace:", error.message);
+    } else {
+    console.error("Backplane Core Pipeline Email Dispatch Fault Trace: An unknown parsing anomaly occurred.");
+    }
+
     return NextResponse.json(
     { error: "Internal processing error occurred while managing communications delivery." },
     { status: 500 }

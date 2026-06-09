@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Hero() {
 const stats = [
@@ -16,10 +17,13 @@ return (
     
     {/* 1. Background Imagery & Dark Overlay Mask */}
     <div className="absolute inset-0 z-0">
-        <img
+        <Image
         src="https://images.unsplash.com/photo-1464207687429-7505649dae38?auto=format&fit=crop&q=80&w=2000"
         alt="Modern tractor working a vast farm field with an agricultural monitoring drone overhead"
-        className="w-full h-full object-cover"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
         />
         {/* Deep overlay to make white text highly visible for investors/NGOs */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-transparent lg:bg-black/55" />

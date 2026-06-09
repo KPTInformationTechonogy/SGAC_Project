@@ -43,7 +43,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         message: result.error || "A gateway error occurred. Please attempt transmission once more.",
         });
     }
-    } catch (err) {
+    } catch {
     setSubmissionStatus({
         type: "error",
         message: "Network core channel pipeline failure. Check network parameters and retry.",
@@ -127,7 +127,7 @@ return (
                 <div>
                     <label className="block font-header text-xs font-bold text-[#263238]/70 uppercase tracking-wider mb-2">Email Address</label>
                     <input 
-                    type="email" required placeholder="e.g., john@company.com"
+                    type="type" required placeholder="e.g., john@company.com"
                     disabled={isSubmitting}
                     className="w-full font-body text-sm bg-white border border-gray-200 focus:border-[#0B5D1E] rounded-xl px-4 py-3.5 outline-none text-[#263238] transition-colors disabled:bg-gray-100 disabled:text-gray-400"
                     value={formState.email}

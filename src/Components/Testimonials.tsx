@@ -26,8 +26,8 @@ const testimonials = [
     author: "Salim Abdussalam",
     role: "Sales & Marketing Manager",
     company: "KPTC",
-    image:Aliyu,
-},
+    image: Aliyu,
+    },
 ];
 
 return (
@@ -69,9 +69,9 @@ return (
                 ))}
                 </div>
 
-                {/* Main Client Testimonial Content */}
+                {/* Main Client Testimonial Content - Fixed Quotes Expression */}
                 <p className="font-body text-sm sm:text-base text-[#263238]/80 leading-relaxed italic relative z-10 mb-8">
-                "{item.quote}"
+                &ldquo;{item.quote}&rdquo;
                 </p>
             </div>
 
